@@ -1,7 +1,8 @@
 # DeonticReasoningWithHarness
 
 Research project on deontic (rule-grounded) reasoning with LLMs, built on DeonticBench
-(arXiv 2604.04443). The owner works on it from several machines (a work Mac, a personal Mac,
+(arXiv 2604.04443) and its agentic follow-up harbor-deonticbench (arXiv 2606.05009).
+The owner works on it from several machines (a work Mac, a personal Mac,
 a JHU cluster), so **this git repo is the only shared state** — anything worth keeping must be
 committed and pushed.
 
@@ -13,7 +14,7 @@ rely on this summary alone.
 | File | What it contains | Read it when |
 |---|---|---|
 | `claude_docs/01_project_overview.md` | Project goal (still a TODO for the owner), repo layout, references (paper / HF dataset / upstream), why the repo stays private | Starting a session; unsure what belongs where |
-| `claude_docs/02_setup_and_sync.md` | New-machine setup (Python env, SWI-Prolog, downloading `whole` splits), the multi-machine sync workflow, how to pull upstream DeonticBench via `git subtree`, per-machine status table | Setting up or running anything; syncing; updating `DeonticBench/` |
+| `claude_docs/02_setup_and_sync.md` | New-machine setup (Python env, SWI-Prolog, downloading `whole` splits, Harbor via `uv`), the multi-machine sync workflow, how to pull both upstream subtrees, per-machine status table | Setting up or running anything; syncing; updating `DeonticBench/` or `harbor-deonticbench/` |
 | `claude_docs/03_deonticbench_review.md` | Critical read of the DeonticBench paper, code and data: task/eval/training summary, main results, verified problems (✅) vs. hypotheses (🔶), candidate research directions, a script reproducing the reference-Prolog scan | Designing experiments; before trusting any number from the paper or any reference program |
 
 ### Doc conventions
@@ -28,8 +29,13 @@ rely on this summary alone.
 
 ## Repo facts
 
-- `DeonticBench/` is the upstream benchmark vendored as a squashed **git subtree**. Plain files;
-  editing them is fine. Never clone into it or convert it to a submodule.
+- `DeonticBench/` (prompt-based eval) and `harbor-deonticbench/` (agentic eval) are both upstream
+  repos vendored as squashed **git subtrees**. Plain files; editing them is fine. Never clone into
+  them or convert them to submodules.
+- `harbor-deonticbench/datasets/` is **gitignored upstream**, so the Harbor tasks are not vendored.
+  Regenerate them from `DeonticBench/` with the adapters — see `claude_docs/02_setup_and_sync.md`.
+- `harbor-deonticbench/meta-harness/` is documented upstream as a submodule but is committed as
+  plain files on `main`; there is no `.gitmodules`, so `--recurse-submodules` is a no-op here.
 - The Prolog eval modes need `swipl` on PATH — check `which swipl` first; it is not installed on
   every machine (see the status table in `02`).
 - API keys come from environment variables. Never write keys into files.

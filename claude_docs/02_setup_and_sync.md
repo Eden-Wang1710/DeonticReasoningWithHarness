@@ -20,7 +20,37 @@ brew install swi-prolog                        # macOS
 python DeonticBench/scripts/download_hf_data.py --splits whole
 ```
 
-API key（`OPENAI_API_KEY`、`OPENROUTER_API_KEY`、`TOGETHER_API_KEY`）只从环境变量读取，**不要写进任何文件**；`.env*` 已被 git 忽略。
+### Harbor（`harbor-deonticbench/`，跑 agentic 评测时才需要）
+
+需要 Python ≥3.12、[`uv`](https://docs.astral.sh/uv/)，以及一个能跑容器的 Docker daemon。
+
+```bash
+cd harbor-deonticbench
+uv sync --all-extras --dev
+```
+
+上游 README 让你 `git submodule update --init --recursive` 拉 `meta-harness/` —— **这里不需要**：
+`meta-harness/` 在上游 `main` 上是以普通文件提交的，没有 `.gitmodules`。
+
+`harbor-deonticbench/datasets/`（真正要跑的 Harbor 任务）在**上游 `.gitignore` 里**，所以没有随
+subtree 进来，必须用 adapter 从 `DeonticBench/` 现场生成（每个 framing 173 题 =
+sara_numeric 35 + sara_binary 30 + airline 80 + uscis-aao 28；注意**没有 housing**）：
+
+```bash
+cd harbor-deonticbench
+export DEONTICBENCH_ROOT="$(cd ../DeonticBench && pwd)"
+for m in direct zeroshot fewshot; do
+  (cd adapters/deonticbench_$m && uv run python run_adapter.py \
+      --deonticbench-root "$DEONTICBENCH_ROOT" \
+      --output-dir ../../datasets/deonticbench-$m)
+done
+```
+
+完整命令（含 `deonticbench-cc-*` 变体、各 agent/provider 的跑法、打分）见
+`harbor-deonticbench/deontic_adapters_scripts.txt` 与 `harbor-deonticbench/deontic-scripts/`。
+生成出来的 `datasets/` 和跑出来的 `jobs/` 都不进 git。
+
+API key（`OPENAI_API_KEY`、`OPENROUTER_API_KEY`、`TOGETHER_API_KEY`、`ANTHROPIC_API_KEY`）只从环境变量读取，**不要写进任何文件**；`.env*` 已被 git 忽略。
 
 DeonticBench 的脚本都以 `DeonticBench/` 为根解析路径，运行结果落在 `DeonticBench/outputs/`（已忽略）。具体跑法见 `DeonticBench/README.md`。
 
@@ -31,14 +61,21 @@ DeonticBench 的脚本都以 `DeonticBench/` 为根解析路径，运行结果�
   - 运行产物：`outputs/`、`bootstrap_results/`、`wandb/`、`*.log`
   - 模型权重：`*.ckpt`、`*.safetensors`、`*.pt`、`*.bin`
   - `DeonticBench/data/*/whole.json`
+  - `harbor-deonticbench/datasets/`（adapter 生成）、`harbor-deonticbench/jobs/`（run 产物）
 
-## 拉取上游 DeonticBench 的更新
+## 拉取上游更新
 
-上游还在持续修订 reference Prolog。把他们最新的 `main` 合并进本仓库的 `DeonticBench/`：
+两个 vendored 目录都是 squashed git subtree，各自从上游 `main` 拉：
 
 ```bash
+# DeonticBench（上游还在持续修订 reference Prolog）
 git subtree pull --prefix DeonticBench https://github.com/guangyaodou/DeonticBench main --squash
+
+# harbor-deonticbench
+git subtree pull --prefix harbor-deonticbench https://github.com/guangyaodou/harbor-deonticbench main --squash
 ```
+
+`git subtree pull` 要求工作区干净，且必须在**仓库根目录**运行。
 
 - 你对 `DeonticBench/` 的本地修改会保留（可能出现普通的合并冲突）。
 - 不要在 `DeonticBench/` 里再 `git clone`，也不要把它改成 submodule。

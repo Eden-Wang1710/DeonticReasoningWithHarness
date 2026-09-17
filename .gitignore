@@ -1,0 +1,39 @@
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Secrets / machine-local environment (API keys live in env vars, never in git)
+.env
+.env.*
+!.env.example
+
+# Claude Code machine-local settings (CLAUDE.md itself IS tracked)
+.claude/settings.local.json
+
+# DeonticBench: full "whole" splits are fetched from HuggingFace per machine
+# (housing/whole.json is ~80 MB, over GitHub's comfortable file size).
+#   python DeonticBench/scripts/download_hf_data.py --splits whole
+DeonticBench/data/*/whole.json
+
+# Run artifacts (regenerable)
+outputs/
+bootstrap_results/
+wandb/
+*.log
+
+# Model weights / checkpoints
+*.ckpt
+*.safetensors
+*.pt
+*.bin

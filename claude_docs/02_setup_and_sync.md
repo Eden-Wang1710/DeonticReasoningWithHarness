@@ -5,7 +5,7 @@
 ## 在一台新机器上开始
 
 ```bash
-git clone git@github.com:<github-username>/DeonticReasoningWithHarness.git
+git clone git@github.com:Eden-Wang1710/DeonticReasoningWithHarness.git   # private repo: this machine's SSH key must be on GitHub
 cd DeonticReasoningWithHarness
 
 # Python 环境（vllm 只在本地部署模型时需要，笔记本上跳过）

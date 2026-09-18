@@ -1,0 +1,114 @@
+
+## USCIS Sample
+
+### Input
+You are an expert in the analysis of immigration appeals and you will parse these Administrative Appeals Office cases into Prolog Code.
+Parse the facts and rules into Prolog code, ensuring that the program's output is binary: either Dismissed or Accepted.
+You are given the following facts:
+The petitioner is a native and citizen of Guatemala who held U-2 nonimmigrant status from May 2017 until May 2021. She timely filed Form I-485 to adjust status as a derivative U nonimmigrant in March 2021 seeking lawful permanent resident status. The Vermont Service Center director denied her I-485, stating she had not submitted a completed Form I-693, Report of Immigration Medical Examination and Vaccination Record. The petitioner appealed that denial and, on appeal, submitted a newly executed Form I-693 medical examination.
+
+You are given the following rules:
+Section 245(m) of the Act contains the eligibility requirements for individuals seeking to adjust status to that of a lawful permanent resident (LPR) based on having been granted U nonimmigrant status. In addition, an applicant for adjustment of status under 245(m) must comply with the general eligibility and documentary requirements to adjust status at 8 C.F.R. § 245 .5, which requires that the applicant"have a medical examination by a designated civil surgeon, whose report setting forth the findings of the mental and physical condition of the applicant, including compliance with section 212(a)(l)(A)(ii) of the Act, shall be incorporated into the record."
+
+For true/false or yes/no predicates, use arity 0 and check it is consistent for all clauses. For example, use there_is_evidence. instead of there_is_evidence(True).
+Output format contract:
+- Return exactly one runnable fenced Prolog block.
+- When executed, print exactly one final token: Accepted or Dismissed.
+- Do not print labels/metadata such as "Label:", confidence values, or explanations.
+Indicate your prolog code using:
+```prolog
+<YOUR_LOGIC_PROGRAM_HERE>
+```
+Do not include the query in the prolog output, only include the entrypoint.
+Include this structure at the end and work assuming that eligibility_met is all the conditions necessary to Accept the case. Therefore, this must be the last part of the program.
+```prolog
+decision(Result) :-
+    (   eligibility_met
+    ->  Result = 'Accepted'
+    ;   Result = 'Dismissed'
+    ).
+
+ main :-
+    catch(
+        (   decision(Result),
+            writeln(Result)
+        ),
+        error(existence_error(procedure, PI), _),
+        handle_undefined(PI)
+    ).
+
+handle_undefined(Name/Arity) :-
+    (   current_predicate(Name/OtherArity),
+        OtherArity \= Arity
+    ->  format('Programming error: called ~w/~w, but only ~w/~w is defined.~n',
+               [Name, Arity, Name, OtherArity])
+    ;   format('Lack of information: predicate ~w/~w is not defined.~n',
+               [Name, Arity])
+    ).
+
+:- initialization(main, main).
+```
+
+Solution (Prolog):
+```prolog
+% Facts (zero-arity predicates for yes/no style facts)
+petitioner_from_guatemala.
+held_u2_from_may_2017_until_may_2021.
+filed_i485_march_2021.
+timely_filed.
+derivative_u_status.
+director_denied_for_missing_i693.
+appealed.
+submitted_i693_on_appeal.
+i693_executed_by_designated_civil_surgeon.
+i693_includes_vaccination_compliance.
+
+% Legal-rule facts (expressing applicability of statutory/regulatory requirements)
+section_245m_applicable.
+cfr_8_245_5_requires_medical.
+general_documentary_requirements_met.
+
+% Derived predicates (zero-arity as required)
+was_u_nonimmigrant_and_derivative_at_filing :-
+    derivative_u_status,
+    timely_filed.
+
+medical_exam_valid :-
+    submitted_i693_on_appeal,
+    i693_executed_by_designated_civil_surgeon,
+    i693_includes_vaccination_compliance.
+
+% eligibility_met must represent all conditions necessary to Accept the case
+eligibility_met :-
+    section_245m_applicable,
+    cfr_8_245_5_requires_medical,
+    was_u_nonimmigrant_and_derivative_at_filing,
+    medical_exam_valid,
+    general_documentary_requirements_met.
+
+decision(Result) :-
+    (   eligibility_met
+    ->  Result = 'Accepted'
+    ;   Result = 'Dismissed'
+    ).
+
+main :-
+    catch(
+        (   decision(Result),
+            writeln(Result)
+        ),
+        error(existence_error(procedure, PI), _),
+        handle_undefined(PI)
+    ).
+
+handle_undefined(Name/Arity) :-
+    (   current_predicate(Name/OtherArity),
+        OtherArity \= Arity
+    ->  format('Programming error: called ~w/~w, but only ~w/~w is defined.~n',
+               [Name, Arity, Name, OtherArity])
+    ;   format('Lack of information: predicate ~w/~w is not defined.~n',
+               [Name, Arity])
+    ).
+
+:- initialization(main, main).
+```

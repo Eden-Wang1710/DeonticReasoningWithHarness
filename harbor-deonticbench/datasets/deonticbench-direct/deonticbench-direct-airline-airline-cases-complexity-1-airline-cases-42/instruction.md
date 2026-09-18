@@ -1,0 +1,21 @@
+The relevant statute is available at `/app/statute.txt`.
+
+
+**Case Facts:**
+Patricia is a Business Class passenger flying from Austin to Quito with the following items: 1. A backpack: 18 x 13 x 7 inches, 6 lbs; 2. A luggage box: 40 x 23 x 19 inches, 78 lbs; 3. A backpack: 36 x 14 x 13 inches, 52 lbs; 4. A luggage box: 38 x 15 x 12 inches, 61 lbs; 5. A luggage box: 50 x 34 x 25 inches, 77 lbs; 6. A backpack: 34 x 20 x 10 inches, 75 lbs; 7. A luggage box: 35 x 17 x 13 inches, 52 lbs; 8. A luggage box: 54 x 29 x 31 inches, 79 lbs; Patricia's flight ticket is $535.
+
+
+**Question:**
+What is the total cost (including the flight ticket fee, checked bag fees, cost of special needs) according to the policies for the passenger?
+
+Carefully read the statute and apply it to the facts to determine the answer.
+
+Write your final answer to `/app/output/answer.txt` in exactly this format (one line):
+
+```
+Answer: <value>
+```
+
+The answer is a whole number (total cost in dollars, no $ sign). E.g., `Answer: 1166`
+
+The task is complete once `/app/output/answer.txt` exists and contains your `Answer:` line.

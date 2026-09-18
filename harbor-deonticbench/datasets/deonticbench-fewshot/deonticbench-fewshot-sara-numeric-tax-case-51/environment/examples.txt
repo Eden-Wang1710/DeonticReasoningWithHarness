@@ -1,0 +1,82 @@
+
+Example 2:
+% Text
+% In 2017, Alice's gross income was $33200. Alice and Bob have been married since Feb 3rd, 2017. Alice has been blind since October 4, 2013. Alice and Bob file jointly in 2017. Bob has no gross income in 2017. Alice and Bob take the standard deduction. Alice and Bob has the same principal place of abode from 2017 to 2020.
+
+% Question
+% How much tax does Alice have to pay in 2017? 
+
+```prolog
+/* Facts from the case */
+gross_income(alice, 2017, 33200).
+gross_income(bob,   2017,     0).
+
+blind(alice, 2017).
+
+married(alice, bob, 2017).
+
+joint_return(2017).
+
+/* Basic amounts taken straight from the statutes              */
+/* §63(c)(2)(A): 200% × $3,000 = $6,000 for MFJ basic standard */
+base_standard_deduction_joint(6000).
+
+/* §63(f): $600 per blind (or age-65) spouse on a joint return */
+additional_standard_deduction(Year, Add) :-
+    findall(600, (blind(Person, Year), married(Person, _, Year)), L),
+    sum_list(L, Add).
+
+/* Full standard deduction for this joint return               */
+standard_deduction(Year, SD) :-
+    joint_return(Year),
+    base_standard_deduction_joint(Base),
+    additional_standard_deduction(Year, Add),
+    SD is Base + Add.
+
+/* §151(d)(1): personal exemption amount                        */
+personal_exemption_amount(2000).
+
+/* Two spouses ⇒ two personal exemptions on a joint return      */
+personal_exemptions(Year, Exempt) :-
+    joint_return(Year),
+    personal_exemption_amount(A),
+    Exempt is A * 2.
+
+/* Combine spouses’ gross income                                */
+combined_gross_income(Year, GI) :-
+    findall(I, gross_income(_, Year, I), L),
+    sum_list(L, GI).
+
+/* §63(b): taxable income = AGI – std-deduction – exemptions     */
+taxable_income(Year, TI) :-
+    combined_gross_income(Year, GI),
+    standard_deduction(Year, SD),
+    personal_exemptions(Year, PE),
+    TI0 is GI - SD - PE,
+    ( TI0 > 0 -> TI = TI0 ; TI = 0 ).
+
+/* §1(a) MFJ rate schedule – only first bracket needed here      */
+tax_bracket_joint(TI, Tax) :-
+    TI =< 36900,
+    Tax is TI * 0.15.
+
+/* Total tax for the joint return                               */
+tax_due(Year, Tax) :-
+    taxable_income(Year, TI),
+    tax_bracket_joint(TI, Tax).
+
+/* Alias so the query can use the exact name asked for          */
+tax("Alice", Year, Tax) :-
+    tax(alice, Year, Tax).
+
+tax(alice, Year, Tax) :-
+    tax_due(Year, Tax).
+
+/* Helper: sum elements of a list                               */
+sum_list([], 0).
+sum_list([H|T], Sum) :- sum_list(T, R), Sum is H + R.
+
+/* Query required by the problem statement                      */
+:- tax("Alice", 2017, Tax), format('Tax result: ~w~n', [Tax]).
+:- halt.
+```

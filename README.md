@@ -1,23 +1,26 @@
 # DeonticReasoningWithHarness
 
-Research project on deontic (rule-grounded) reasoning with LLMs, built on top of
-[DeonticBench](https://github.com/guangyaodou/DeonticBench)
-([paper](https://arxiv.org/abs/2604.04443) · [dataset](https://huggingface.co/datasets/gydou/DeonticBench))
-and its agentic follow-up
-[harbor-deonticbench](https://github.com/guangyaodou/harbor-deonticbench)
-([paper](https://arxiv.org/abs/2606.05009)).
+Master's thesis work on **deontic reasoning** with LLMs — answering questions by applying explicit
+rules and policies (statutes, contracts, regulations) to case-specific facts.
+
+Built on two papers by Guangyao Dou (JHU, Van Durme group), both vendored here as git subtrees:
+
+- **DeonticBench** ([paper](https://arxiv.org/abs/2604.04443) · [code](https://github.com/guangyaodou/DeonticBench) · [data](https://huggingface.co/datasets/gydou/DeonticBench)) — the benchmark: statute in the prompt, one-shot answer or Prolog program.
+- **DAR: Deontic Reasoning with Agentic Harnesses** ([paper](https://arxiv.org/abs/2606.05009) · [code](https://github.com/guangyaodou/harbor-deonticbench)) — the agentic follow-up: the statute is a file in a container and the agent reads it on demand.
 
 ## Where things are
 
 | Path | What it is |
 |---|---|
-| [`claude_docs/`](claude_docs/) | All project documentation (numbered, in Chinese) |
-| ├ [`01_project_overview.md`](claude_docs/01_project_overview.md) | Goal, repo layout, references, visibility |
-| ├ [`02_setup_and_sync.md`](claude_docs/02_setup_and_sync.md) | New-machine setup, multi-machine sync, pulling upstream updates |
-| └ [`03_deonticbench_review.md`](claude_docs/03_deonticbench_review.md) | Critical read of the DeonticBench paper, code and data |
+| [`claude_docs/`](claude_docs/) | All project documentation, numbered |
+| ├ [`01_project_overview.md`](claude_docs/01_project_overview.md) | What the thesis is, repo layout, references, visibility |
+| ├ [`02_setup_and_sync.md`](claude_docs/02_setup_and_sync.md) | Per-machine setup, multi-machine sync, regenerating datasets, pulling upstream |
+| ├ [`03_deonticbench_review.md`](claude_docs/03_deonticbench_review.md) | Close reading of the DeonticBench paper, code and data |
+| ├ [`04_dar_review.md`](claude_docs/04_dar_review.md) | Close reading of DAR and the Harbor harness |
+| └ [`05_thesis_directions.md`](claude_docs/05_thesis_directions.md) | Candidate directions and the decision log |
 | [`CLAUDE.md`](CLAUDE.md) | Context auto-loaded by Claude Code; indexes `claude_docs/` |
-| [`DeonticBench/`](DeonticBench/) | Upstream benchmark (prompt-based eval), vendored as a git subtree |
-| [`harbor-deonticbench/`](harbor-deonticbench/) | Upstream agentic harness (Harbor + meta-harness), vendored as a git subtree |
+| [`DeonticBench/`](DeonticBench/) | Upstream benchmark (prompt-based eval), git subtree |
+| [`harbor-deonticbench/`](harbor-deonticbench/) | Upstream agentic harness (Harbor + meta-harness), git subtree |
 
-This repository is private: `DeonticBench` ships without a LICENSE file.
+Private repo: `DeonticBench` ships no LICENSE file, and this also holds unpublished thesis work.
 (`harbor-deonticbench` is Apache-2.0, but that does not make the repo as a whole redistributable.)

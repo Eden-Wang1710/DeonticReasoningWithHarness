@@ -1,36 +1,79 @@
-# 01 · 项目概览
+# 01 · Project Overview
 
-## 这个项目是什么
+## What this is
 
-围绕 LLM 的 **deontic reasoning**（在明确规则下对义务 / 许可 / 禁止的推理）做研究，以
-[DeonticBench](https://github.com/guangyaodou/DeonticBench)（prompt 内放法条，一次性生成答案 / Prolog）
-及其 agentic 后续工作 [harbor-deonticbench](https://github.com/guangyaodou/harbor-deonticbench)
-（DAR：把法条放进容器当文件，agent 用通用工具按需读取）为基础。
+My **master's thesis**: improving LLM **deontic reasoning** — answering questions by applying
+explicit rules and policies (statutes, contracts, regulations) to case-specific facts.
 
-> TODO（由 owner 补充）：项目的具体目标，以及这里 "harness" 指什么。
-> 候选方向见 [03_deonticbench_review.md](03_deonticbench_review.md) 的 §3。
+The starting point is two consecutive papers by **Guangyao Dou** (JHU, Van Durme group), a senior
+PhD student in the group. Both codebases are vendored into this repo:
 
-## 仓库结构
+| | Work | Setup | Path here |
+|---|---|---|---|
+| ① | **DeonticBench** (arXiv 2604.04443) | The benchmark. Statute goes in the prompt; the model emits an answer or a Prolog program in **one shot**; an external runner executes the Prolog and scores it. | `DeonticBench/` |
+| ② | **DAR: Deontic Reasoning with Agentic Harnesses** (arXiv 2606.05009) | Makes ① **agentic**. The statute is a *file* in a container; the agent reads/greps it on demand and can run `swipl` itself, iterating over multiple turns. | `harbor-deonticbench/` |
 
-| 路径 | 内容 |
+②'s headline finding: agentic harnesses can push the frontier, **but gains are not uniform** —
+weaker models often *degrade* on numerical tasks while consuming far more tokens.
+
+## What the thesis does
+
+**Improve on ① and ②.** The specific direction has not yet been narrowed to one. Candidate
+directions, the evidence behind each, and the trade-offs are tracked in
+[05_thesis_directions.md](05_thesis_directions.md), which doubles as the decision log. Once a
+direction is fixed, this section becomes a one-line thesis statement.
+
+The candidates are grounded in two close-reading notes — currently this project's most valuable
+asset:
+
+- [03_deonticbench_review.md](03_deonticbench_review.md) — ①: paper, code and data
+- [04_dar_review.md](04_dar_review.md) — ②: paper and code
+
+Everything marked ✅ in those notes (reference Prolog written against the answer key; Airline
+few-shot exemplars drawn from the test set itself; the released scorer not reproducing the
+published metric; the two papers scoring numeric answers differently; DAR's two custom agents
+missing from the released code) is a **concrete entry point for improvement**, not a complaint.
+This is in-group work — the author is reachable, and missing pieces can simply be asked for.
+
+## Repo layout
+
+| Path | Contents |
 |---|---|
-| `README.md` | GitHub 首页用的简短说明（英文），只做指路。 |
-| `CLAUDE.md` | Claude Code 每次会话自动加载的项目上下文，含 `claude_docs/` 的索引。 |
-| `claude_docs/` | 所有项目文档，按 `NN_snake_case.md` 编号。 |
-| `DeonticBench/` | 上游 benchmark（代码、`hard` / `smoke` 数据、法条、prompts），以 **git subtree** 方式纳入（`guangyaodou/DeonticBench` @ `3c168f9`，squash）。是普通文件，可以直接改。 |
-| `harbor-deonticbench/` | 上游 agentic 评测框架（Harbor 0.3.0 + meta-harness + DeonticBench adapters + 打分脚本），同样以 **git subtree** 纳入（`guangyaodou/harbor-deonticbench` @ `2fe3aa4`，squash，2026-09-17）。Apache-2.0。 |
+| `README.md` | Short English pointer for the GitHub landing page. |
+| `CLAUDE.md` | Context auto-loaded by Claude Code: index of `claude_docs/` plus the easy-to-get-wrong list. |
+| `claude_docs/` | All project documentation, numbered `NN_snake_case.md`. |
+| `DeonticBench/` | ①'s upstream code (scripts, `hard` / `smoke` data, statutes, prompts). **git subtree** (`guangyaodou/DeonticBench` @ `3c168f9`, squashed). Plain files; editing them is fine. |
+| `harbor-deonticbench/` | ②'s upstream code (Harbor 0.3.0 + meta-harness + DeonticBench adapters + scorer). **git subtree** (`guangyaodou/harbor-deonticbench` @ `2fe3aa4`, squashed, vendored 2026-09-17). Apache-2.0. |
 
-根目录只保留 `README.md` 和 `CLAUDE.md` 两个 md（前者 GitHub 要在首页渲染，后者 Claude Code 只从根目录自动加载）；其余文档一律放 `claude_docs/`。
+Only `README.md` and `CLAUDE.md` live at the repo root (GitHub renders the first on the landing
+page; Claude Code auto-loads the second only from the root). Every other doc goes in `claude_docs/`.
 
-## 参考
+Where my own code will live is decided once the direction is fixed (see `05`). The rule is: keep it
+**out of the two subtree directories**, or every future `git subtree pull` will conflict.
 
-- Paper（benchmark）：[DeonticBench: A Benchmark for Reasoning over Rules (arXiv 2604.04443)](https://arxiv.org/abs/2604.04443)
-- Paper（agentic 后续，DAR）：[arXiv 2606.05009](https://arxiv.org/abs/2606.05009) · [项目主页](https://guangyaodou.github.io/harbor-deonticbench/) · [上游代码](https://github.com/guangyaodou/harbor-deonticbench)
-- 数据集：[gydou/DeonticBench on HuggingFace](https://huggingface.co/datasets/gydou/DeonticBench)（CC-BY-4.0；5 个 config × `whole` / `hard`）
-- 上游代码：<https://github.com/guangyaodou/DeonticBench> · [项目主页](https://guangyaodou.github.io/DeonticBench/)
+## References
 
-## 可见性
+**① DeonticBench**
+- Paper: [arXiv 2604.04443](https://arxiv.org/abs/2604.04443)
+- Code: <https://github.com/guangyaodou/DeonticBench> · [project page](https://guangyaodou.github.io/DeonticBench/)
+- Data: [gydou/DeonticBench on HuggingFace](https://huggingface.co/datasets/gydou/DeonticBench) (CC-BY-4.0; 5 configs × `whole` / `hard`)
 
-`guangyaodou/DeonticBench` **没有 LICENSE 文件**（只有 HuggingFace 数据集明确是 CC-BY-4.0）。在与 DeonticBench 作者确认可以再分发其代码之前，本仓库保持 **private**。
+**② DAR**
+- Paper: [DAR: Deontic Reasoning with Agentic Harnesses (arXiv 2606.05009)](https://arxiv.org/abs/2606.05009) —
+  Guangyao Dou, William Jurayj, Nils Holzenberger, Benjamin Van Durme; submitted 2026-06-03
+- Code: <https://github.com/guangyaodou/harbor-deonticbench> · [project page](https://guangyaodou.github.io/harbor-deonticbench/)
 
-`harbor-deonticbench` 本身是 Apache-2.0（含 NOTICE 要求：再分发时保留 LICENSE 和版权声明），但这不改变上面的结论 —— 只要 `DeonticBench/` 还在仓库里，整体就不公开。
+**Upstream dependencies**
+- [Harbor](https://github.com/harbor-framework/harbor) — agent evaluation framework (Apache-2.0)
+- [meta-harness](https://github.com/stanford-iris-lab/meta-harness) — Stanford IRIS Lab, Kira agents
+
+## Visibility
+
+This repo stays **private**, for two reasons:
+
+1. `guangyaodou/DeonticBench` ships no LICENSE file (only the HF dataset is explicitly CC-BY-4.0).
+   `harbor-deonticbench` is Apache-2.0, which does not change the conclusion for the repo as a whole.
+2. It also holds my own unfinished thesis work.
+
+Licensing is a question to put directly to the author — this is in-group code, not an arm's-length
+upstream.

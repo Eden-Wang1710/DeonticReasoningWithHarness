@@ -1,62 +1,76 @@
 # DeonticReasoningWithHarness
 
-Research project on deontic (rule-grounded) reasoning with LLMs, built on DeonticBench
-(arXiv 2604.04443) and its agentic follow-up harbor-deonticbench (arXiv 2606.05009).
-The owner works on it from several machines (a work Mac, a personal Mac,
-a JHU cluster), so **this git repo is the only shared state** — anything worth keeping must be
-committed and pushed.
+Master's thesis on LLM **deontic reasoning** (applying explicit rules and policies to case facts),
+built on two papers by a senior PhD student in the same group, Guangyao Dou (JHU, Van Durme):
+**DeonticBench** (arXiv 2604.04443, vendored at `DeonticBench/`) and **DAR: Deontic Reasoning with
+Agentic Harnesses** (arXiv 2606.05009, vendored at `harbor-deonticbench/`).
+
+The owner works from several machines (work Mac, personal Mac, JHU cluster), so **this git repo is
+the only shared state** — anything worth keeping must be committed and pushed.
 
 ## Docs: `claude_docs/`
 
-All project documentation lives in `claude_docs/`. Read the relevant file before acting; do not
-rely on this summary alone.
+All project documentation lives in `claude_docs/`. Read the relevant file before acting; do not rely
+on this summary alone.
 
 | File | What it contains | Read it when |
 |---|---|---|
-| `claude_docs/01_project_overview.md` | Project goal (still a TODO for the owner), repo layout, references (paper / HF dataset / upstream), why the repo stays private | Starting a session; unsure what belongs where |
-| `claude_docs/02_setup_and_sync.md` | New-machine setup (Python env, SWI-Prolog, downloading `whole` splits, Harbor via `uv`), the multi-machine sync workflow, how to pull both upstream subtrees, per-machine status table | Setting up or running anything; syncing; updating `DeonticBench/` or `harbor-deonticbench/` |
-| `claude_docs/03_deonticbench_review.md` | Critical read of the DeonticBench paper, code and data: task/eval/training summary, main results, verified problems (✅) vs. hypotheses (🔶), candidate research directions, a script reproducing the reference-Prolog scan | Designing experiments; before trusting any number from the paper or any reference program |
+| `claude_docs/01_project_overview.md` | What the thesis is and what it builds on, repo layout, references, why the repo stays private | Starting a session; unsure what belongs where |
+| `claude_docs/02_setup_and_sync.md` | Per-machine setup (Python, SWI-Prolog, `uv`, Docker, `whole` splits), sync workflow, regenerating `datasets/`, pulling both subtrees, machine status table | Setting up or running anything; syncing; updating either subtree |
+| `claude_docs/03_deonticbench_review.md` | Close reading of DeonticBench: task/eval/training summary, headline results, verified problems (✅) vs. hypotheses (🔶), a script reproducing the reference-Prolog scan | Designing experiments; before trusting any number from that paper or any reference program |
+| `claude_docs/04_dar_review.md` | Close reading of DAR: what the harness actually does, grading differences vs. DeonticBench, gaps in the released code, what DAR leaves open | Working with `harbor-deonticbench/`; comparing the two regimes |
+| `claude_docs/05_thesis_directions.md` | Candidate thesis directions with the evidence for each, and the decision log | Choosing or revisiting the direction; recording any project-level decision |
 
 ### Doc conventions
 
 - Every new markdown doc goes in `claude_docs/`, named `NN_snake_case.md` with a two-digit prefix.
   Use the next free number; do not renumber existing files (links depend on them).
 - When you add, rename or substantially change a doc, update the table above in the same change.
-- Docs in `claude_docs/` are written in Chinese (the owner's working language), with a
-  `# NN · 标题` heading. `README.md` and `CLAUDE.md` stay in English and are the only markdown
-  files at the repo root.
+- **All docs are written in English**, with a `# NN · Title` heading. `README.md` and `CLAUDE.md`
+  stay at the repo root and are the only markdown files there. (The owner's working language is
+  Chinese — respond in Chinese in conversation, but write every file in English.)
 - Mark claims as verified (✅) or hypothesis (🔶) when recording findings, and date them.
+- Project-level decisions go in the decision log in `05`, not scattered across docs.
 
 ## Repo facts
 
 - `DeonticBench/` (prompt-based eval) and `harbor-deonticbench/` (agentic eval) are both upstream
   repos vendored as squashed **git subtrees**. Plain files; editing them is fine. Never clone into
-  them or convert them to submodules.
-- `harbor-deonticbench/datasets/` is **gitignored upstream**, so the Harbor tasks are not vendored.
-  Regenerate them from `DeonticBench/` with the adapters — see `claude_docs/02_setup_and_sync.md`.
+  them or convert them to submodules. Keep our own code **out** of both, or every `git subtree pull`
+  will conflict.
+- `harbor-deonticbench/datasets/` **is tracked here**, deliberately against upstream, which
+  gitignores it. The `/datasets/` line in `harbor-deonticbench/.gitignore` is commented out with a
+  note; expect a conflict there on `subtree pull` and keep our version. See `02`.
 - `harbor-deonticbench/meta-harness/` is documented upstream as a submodule but is committed as
   plain files on `main`; there is no `.gitmodules`, so `--recurse-submodules` is a no-op here.
-- The Prolog eval modes need `swipl` on PATH — check `which swipl` first; it is not installed on
-  every machine (see the status table in `02`).
+- Prolog eval needs `swipl` on PATH; the Harbor side needs Python ≥3.12, `uv` and a running Docker
+  daemon. None of that is installed on every machine — check the status table in `02` first.
 - API keys come from environment variables. Never write keys into files.
 
-## Easy to get wrong (evidence in `claude_docs/03_deonticbench_review.md`)
+## Easy to get wrong (evidence in `claude_docs/03` and `04`)
 
+- **The two papers grade numeric answers differently.** DeonticBench allows ±$1; DAR's `test.sh`
+  does exact integer match. SARA Numeric / Airline numbers are not comparable across them without
+  re-scoring.
 - `DeonticBench/scripts/bootstrap_outputs.py` reports **accuracy only**. The paper's SARA Binary /
-  Housing / USCIS numbers are macro-F1 with abstentions mapped to the opposite class, so the
-  released script cannot reproduce them as-is.
+  Housing / USCIS numbers are macro-F1 with abstentions mapped to the opposite class, so the released
+  script cannot reproduce them. `harbor-deonticbench/evaluate_deonticbench.py` *does* implement
+  macro-F1 — port from there.
 - Airline few-shot takes its exemplar from the evaluated cases file itself (another test case's
   reference program, same cabin class) unless `--airline-exemplar-pool` is passed.
-- Reference Prolog programs were kept only if their output matched the gold label; some hardcode
-  or rationalize the answer. Do not treat them as ground-truth reasoning, or as clean SFT targets,
+- Reference Prolog programs were kept only if their output matched the gold label; some hardcode or
+  rationalize the answer. Do not treat them as ground-truth reasoning, or as clean SFT targets,
   without filtering.
-- Housing `hard` is balanced yes/no, yet every model scores below chance. Suspected
-  label-convention mismatch — a hypothesis, not yet verified.
+- Housing `hard` is balanced yes/no, yet every model scores below chance. Suspected label-convention
+  mismatch — a hypothesis, not yet verified. **DAR drops Housing entirely**: 4 subdomains, 173 tasks.
+- `kira_deontic_grounded` and `kira_compute_then_answer` are referenced by DAR's README and run
+  scripts but **are not in the released code**; neither are the `deonticbench-cc-*` adapters.
 - Hard sets are small (28–80 cases); always report confidence intervals.
 
 ## Conventions
 
-- The owner writes in Chinese: respond in Chinese unless asked otherwise. Code, comments and
-  commit messages stay in English.
-- Do not commit run artifacts (`outputs/`, `bootstrap_results/`), model weights, or `whole` splits.
-- Keep the GitHub repo private: upstream ships no LICENSE file.
+- The owner writes in Chinese: **respond in Chinese** unless asked otherwise. All files — docs, code,
+  comments, commit messages — are in English.
+- Do not commit run artifacts (`outputs/`, `bootstrap_results/`, `jobs/`), model weights, or `whole`
+  splits. `datasets/` is the deliberate exception (see above).
+- Keep the GitHub repo private.

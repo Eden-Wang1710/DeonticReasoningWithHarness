@@ -214,7 +214,10 @@ results-*.csv
 test_swipl.txt
 *.ipynb
 /tasks/
-/datasets/
+# LOCAL DEVIATION from upstream: we track datasets/ in git.
+# The generated Harbor tasks are ~21 MB of text and we want them pinned, not
+# regenerated per machine. Expect a conflict here on `git subtree pull`; keep our version.
+# /datasets/
 !examples/tasks/
 *.code-workspace
 ignore/

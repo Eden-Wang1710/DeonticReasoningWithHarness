@@ -19,7 +19,7 @@ on this summary alone.
 | `claude_docs/02_setup_and_sync.md` | Per-machine setup (Python, SWI-Prolog, `uv`, Docker, `whole` splits), sync workflow, regenerating `datasets/`, pulling both subtrees, machine status table | Setting up or running anything; syncing; updating either subtree |
 | `claude_docs/03_deonticbench_review.md` | Close reading of DeonticBench: task/eval/training summary, headline results, verified problems (✅) vs. hypotheses (🔶), a script reproducing the reference-Prolog scan | Designing experiments; before trusting any number from that paper or any reference program |
 | `claude_docs/04_dar_review.md` | Close reading of DAR: what the harness actually does, grading differences vs. DeonticBench, gaps in the released code, what DAR leaves open | Working with `harbor-deonticbench/`; comparing the two regimes |
-| `claude_docs/05_thesis_directions.md` | Candidate thesis directions with the evidence for each, and the decision log | Choosing or revisiting the direction; recording any project-level decision |
+| `claude_docs/05_confidence_proposal.md` | The thesis direction: trace-based confidence added to the DAR harness, evaluated by calibration (ECE, Kuiper) and by real-world cost under abstention; method, evaluation plan, open items, and the decision log | Writing the proposal; designing or running any confidence experiment; recording any project-level decision |
 
 ### Doc conventions
 
@@ -31,6 +31,18 @@ on this summary alone.
   Chinese — respond in Chinese in conversation, but write every file in English.)
 - Mark claims as verified (✅) or hypothesis (🔶) when recording findings, and date them.
 - Project-level decisions go in the decision log in `05`, not scattered across docs.
+
+## Paper summaries: `paper_review_gpt/`
+
+`paper_review_gpt/` holds summaries of related papers that the owner generates **with GPT**, one
+file per paper, named `snake_case.md` (e.g. `trustworthy_tax_reasoning.md`,
+`calibrating_llm_judges.md`). They are Chinese technical reports written by GPT, not Claude-authored docs.
+
+- Read them for background on related work, but treat their claims as secondary — check the
+  original paper before relying on a number or a detail.
+- Do not edit, translate, rename or move them unless asked; they are an exception to the
+  "English only" and "docs go in `claude_docs/`" rules above.
+- Findings about a paper that matter to the thesis still go in `claude_docs/` (e.g. `05`), in English.
 
 ## Repo facts
 

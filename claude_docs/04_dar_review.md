@@ -137,7 +137,7 @@ execute-and-repair loop. What it does **not** resolve, and what therefore stays 
 - The abstract's own negative finding — weaker models degrade on numerical tasks while burning far
   more tokens — is a stated open problem, not a solved one.
 
-Candidate directions built on these are in [05_thesis_directions.md](05_thesis_directions.md).
+The thesis direction built on these is in [05_confidence_proposal.md](05_confidence_proposal.md).
 
 ## 5. To do on the next pass
 

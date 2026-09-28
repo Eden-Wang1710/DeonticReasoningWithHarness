@@ -18,13 +18,13 @@ weaker models often *degrade* on numerical tasks while consuming far more tokens
 
 ## What the thesis does
 
-**Improve on ① and ②.** The specific direction has not yet been narrowed to one. Candidate
-directions, the evidence behind each, and the trade-offs are tracked in
-[05_thesis_directions.md](05_thesis_directions.md), which doubles as the decision log. Once a
-direction is fixed, this section becomes a one-line thesis statement.
+**Add a confidence estimate to the DAR harness (②) and measure whether it can be trusted.** After
+the agent solves a case, a verifier reads the reasoning trace and outputs the probability that the
+answer is correct. This is evaluated by calibration (ECE, Kuiper) and by the real-world cost saved
+when low-confidence answers are refused. The plan is in
+[05_confidence_proposal.md](05_confidence_proposal.md), which doubles as the decision log.
 
-The candidates are grounded in two close-reading notes — currently this project's most valuable
-asset:
+The direction is grounded in two close-reading notes:
 
 - [03_deonticbench_review.md](03_deonticbench_review.md) — ①: paper, code and data
 - [04_dar_review.md](04_dar_review.md) — ②: paper and code

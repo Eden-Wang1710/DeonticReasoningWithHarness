@@ -35,8 +35,8 @@ on this summary alone.
 ## Paper summaries: `paper_review_gpt/`
 
 `paper_review_gpt/` holds summaries of related papers that the owner generates **with GPT**, one
-file per paper, named `snake_case.md` (e.g. `trustworthy_tax_reasoning.md`,
-`calibrating_llm_judges.md`). They are Chinese technical reports written by GPT, not Claude-authored docs.
+file per paper, named `NN_snake_case.md` with a two-digit reading-order prefix (e.g. `03_trustworthy_tax_reasoning.md`,
+`04_calibrating_llm_judges.md`). They are Chinese technical reports written by GPT, not Claude-authored docs.
 
 - Read them for background on related work, but treat their claims as secondary — check the
   original paper before relying on a number or a detail.

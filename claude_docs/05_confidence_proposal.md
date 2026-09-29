@@ -28,8 +28,8 @@ answers are refused and handed to a human.
 |---|---|---|
 | **DeonticBench** (arXiv 2604.04443) | The tasks and gold labels; prompt-based evaluation | [03](03_deonticbench_review.md) |
 | **DAR** (arXiv 2606.05009) | The agentic harness the confidence step is added to; a recorded trajectory per run | [04](04_dar_review.md) |
-| **Calibrating LLM Judges** (arXiv 2512.22245) | The calibration metrics (ECE, weighted Kuiper) and the idea of estimating confidence after a completed judgement | `paper_review_gpt/calibrating_llm_judges.md` |
-| **LLMs and Logic Programs for Trustworthy Tax Reasoning** (arXiv 2508.21051, AAAI 2026) | The dollar cost model and abstention-to-human framing, on SARA | `paper_review_gpt/trustworthy_tax_reasoning.md` |
+| **Calibrating LLM Judges** (arXiv 2512.22245) | The calibration metrics (ECE, weighted Kuiper) and the idea of estimating confidence after a completed judgement | `paper_review_gpt/04_calibrating_llm_judges.md` |
+| **LLMs and Logic Programs for Trustworthy Tax Reasoning** (arXiv 2508.21051, AAAI 2026) | The dollar cost model and abstention-to-human framing, on SARA | `paper_review_gpt/03_trustworthy_tax_reasoning.md` |
 
 The last two are known to this project only through GPT-written summaries 🔶. Every number and
 formula quoted from them below must be checked against the original paper before it appears in the

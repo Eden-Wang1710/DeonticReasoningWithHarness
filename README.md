@@ -1,4 +1,4 @@
-# DeonticReasoningWithHarness
+# Deontic Reasoning with Harness
 
 Master's thesis work on **deontic reasoning** with LLMs — answering questions by applying explicit
 rules and policies (statutes, contracts, regulations) to case-specific facts.

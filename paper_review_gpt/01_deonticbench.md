@@ -1,5 +1,7 @@
 # DeonticBench：模型能否把给定规则用对？
 
+> **发表状态（核对日期：2026-09-29）：** [arXiv 预印本](https://arxiv.org/abs/2604.04443)。
+
 论文：[DeonticBench: A Benchmark for Reasoning over Rules](https://arxiv.org/abs/2604.04443v1)，Guangyao Dou 等，2026-04-06，预印本。本文依据 v1 正文、附录及下列固定版本官方代码撰写。
 
 **核心结论：**这篇构建了包含 6,232 道题的规则推理基准，并比较直接回答、生成 Prolog 和模型后训练。程序能运行，不代表它翻译对了规则；符号执行的收益明显依赖任务和提示方式。

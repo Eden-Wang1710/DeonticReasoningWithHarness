@@ -1,6 +1,8 @@
 # Language Models and Logic Programs：让 LLM 翻译案例，让 Prolog 算税
 
-> 原文：William Jurayj、Nils Holzenberger、Benjamin Van Durme，[Language Models and Logic Programs for Trustworthy Tax Reasoning](https://arxiv.org/pdf/2508.21051v3)。按 2026-02-05 的 v3 解读；[arXiv 页面](https://arxiv.org/abs/2508.21051)注明已被 AAAI 2026 接收。核对日期：2026-09-27。
+> **发表状态（核对日期：2026-09-29）：** 已发表于 **AAAI 2026 · Special Track on AI for Social Impact**。来源：[AAAI 官方论文集](https://ojs.aaai.org/index.php/AAAI/article/view/41212)（40(45)，38688–38698；2026-03-14 发布）。
+
+> 原文：William Jurayj、Nils Holzenberger、Benjamin Van Durme，[Language Models and Logic Programs for Trustworthy Tax Reasoning](https://arxiv.org/pdf/2508.21051v3)。按 2026-02-05 的 v3 解读；技术内容核对日期：2026-09-27。
 
 这篇把税务推理拆成“理解文字”和“执行规则”：LLM 将案例写成 Prolog，求解器计算税额，执行失败或两次结果不一致时转人工。**不训练模型，主要贡献是这套流程的比较，以及把错误和拒答折算成钱的评估方式。**
 

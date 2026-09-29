@@ -1,5 +1,7 @@
 # Harness-Zero：把外部 harness 的工作流程教进模型
 
+> **发表状态（核对日期：2026-09-29）：** [arXiv 预印本](https://arxiv.org/abs/2609.24974)。
+
 - 论文：[Harness-Zero: Harness Distillation via Agent-as-Harness](https://arxiv.org/abs/2609.24974)，阅读版本 v1。
 - 作者：Haoran Ye、Yuxing Lu、Haonan Dong、Zhaochen Su、Guojie Song。
 - [原文及附录](https://arxiv.org/html/2609.24974v1) · [官方代码](https://github.com/metaevo-ai/harness-zero)

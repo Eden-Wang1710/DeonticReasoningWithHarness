@@ -1,8 +1,6 @@
 # Calibrating LLM Judges：给裁判的判断配一个可信的置信度
 
-> **发表状态（核对日期：2026-09-29）：** 已发表于 **ACL 2026 · Industry Track**。来源：[ACL Anthology 官方论文集](https://aclanthology.org/2026.acl-industry.14/)（2026 年 7 月，193–216 页）。
-
-> 原文：Bhaktipriya Radharapu 等，[Calibrating LLM Judges: Linear Probes for Fast and Reliable Uncertainty Estimation](https://arxiv.org/pdf/2512.22245v1)，2025-12-23，v1。本文为中文技术解读；核对日期：2026-09-27。
+> 原文：Bhaktipriya Radharapu 等，[Calibrating LLM Judges: Linear Probes for Fast and Reliable Uncertainty Estimation](https://arxiv.org/pdf/2512.22245v1)，2025-12-23，v1；已发表于 [ACL 2026 Industry Track](https://aclanthology.org/2026.acl-industry.14/)（发表状态核对：2026-09-29）。本文为中文技术解读；核对日期：2026-09-27。
 
 这篇给已经完成评判的 LLM 加一个小型线性 probe，估计“刚才这次判断有多大概率符合标准标签”。核心是**冻结 judge、读取内部表示、训练置信度预测器**。
 

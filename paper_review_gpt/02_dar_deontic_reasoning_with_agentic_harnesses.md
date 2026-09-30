@@ -1,8 +1,6 @@
 # DAR：让 LLM 自己查规则、调用工具，再回答问题
 
-> **发表状态（核对日期：2026-09-29）：** [arXiv 预印本](https://arxiv.org/abs/2606.05009)。
-
-> 原文：Guangyao Dou、William Jurayj、Nils Holzenberger、Benjamin Van Durme，[DAR: Deontic Reasoning with Agentic Harnesses](https://arxiv.org/pdf/2606.05009v1)，2026-06-03，v1。源码核对日期：2026-09-28；源码补充与论文实验分开标注。
+> 原文：Guangyao Dou、William Jurayj、Nils Holzenberger、Benjamin Van Durme，[DAR: Deontic Reasoning with Agentic Harnesses](https://arxiv.org/pdf/2606.05009v1)，2026-06-03，v1，arXiv 预印本。源码核对日期：2026-09-28；源码补充与论文实验分开标注。
 
 这篇研究：把整套规则从 prompt 搬到文件里，让 LLM 自己搜索、阅读、运行 Python，能否提高规则推理能力？**没有训练新模型；主要贡献是任务接入和不同模型、harness 的实验比较。**
 
